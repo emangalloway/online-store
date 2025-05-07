@@ -22,4 +22,9 @@ public class Product {
     public double getProductPrice() {
         return productPrice;
     }
+
+    @Override
+    public String toString() {
+        return sku +"|"+productName +"|"+productPrice;
+    }
 }

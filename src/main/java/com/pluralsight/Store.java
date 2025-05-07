@@ -1,9 +1,12 @@
 package com.pluralsight;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.RecursiveTask;
 
 public class Store {
 
@@ -58,8 +61,9 @@ public class Store {
                 String productName = parts[1];
                 double price = Double.parseDouble(parts[2]);
                 Product Inventory = new Product(sku,productName,price);
-
+                inventory.add(Inventory);
             }
+            bufferedReader.close();
 
         }catch (Exception e){
             System.out.println("An error has occurred");
@@ -75,6 +79,36 @@ public class Store {
     }
 
     public static void displayProducts(ArrayList<Product> inventory, ArrayList<Product> cart, Scanner scanner) {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("cart.csv", true));
+            boolean found = false;
+            //Display Inventory
+            for (Product product : inventory) {
+                System.out.println(product);
+            }
+            System.out.println(" ");
+            System.out.println("Choose Item to add to cart? (Enter ID)");
+            String sku = scanner.nextLine();
+
+            //Search through inventory to find product by sku and add to cart.csv file
+
+            for (Product product : inventory) {
+                if (product.getSku().equalsIgnoreCase(sku)){
+                    cart.add(product);//adding item to cart
+                    bufferedWriter.write(product.toString());
+                    bufferedWriter.close();
+                    System.out.println("Successfully added to cart!");
+                    found = true;
+                    break;
+                }
+                if (found){
+                    System.out.println("Product not found");
+                }
+            }
+        }catch (Exception e){
+            System.out.println("An error has occurred");
+        }
+
         // This method should display a list of products from the inventory,
         // and prompt the user to add items to their cart. The method should
         // prompt the user to enter the ID of the product they want to add to
@@ -83,6 +117,32 @@ public class Store {
     }
 
     public static void displayCart(ArrayList<Product> cart, Scanner scanner, double totalAmount) {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("cart.csv", true));
+            //Display Items in cart
+            boolean remove = false;
+            for (Product product : cart) {
+                System.out.println(product);
+                //Ask if they would like to remove items
+                System.out.println(" ");
+                System.out.println("Would you like to remove items (Enter ID)");
+                String removeItem = scanner.nextLine();
+                if (!remove && removeItem.equalsIgnoreCase(product.getSku())) {
+                    cart.remove(product);
+                    bufferedWriter.write(product.toString());
+                    bufferedWriter.close();
+                    System.out.println("Successfully removed item from cart!");
+                }
+
+                if (removeItem.isBlank()) {
+                    return;
+                }
+                totalAmount += product.getProductPrice();
+                System.out.println("You owe "+totalAmount);
+            }
+        }catch (Exception e){
+            System.out.println("An error has occurred!");
+        }
         // This method should display the items in the cart ArrayList, along
         // with the total cost of all items in the cart. The method should
         // prompt the user to remove items from their cart by entering the ID
@@ -97,11 +157,11 @@ public class Store {
         // if they confirm.
     }
 
-    public static Product findProductById(String id, ArrayList<Product> inventory) {
+    /*public static Product findProductById(String id, ArrayList<Product> inventory) {
         // This method should search the inventory ArrayList for a product with
         // the specified ID, and return the corresponding com.pluralsight.Product object. If
         // no product with the specified ID is found, the method should return
         // null.
-    }
+    }*/
 }
 
