@@ -120,30 +120,30 @@ public class Store {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("cart.csv", true));
             //Display Items in cart
-            boolean remove = false;
+            System.out.println("Items in your cart: ");
             for (Product product : cart) {
                 System.out.println(product);
-                //Ask if they would like to remove items
-                System.out.println(" ");
-                System.out.println("Would you like to remove items (Enter ID)");
-                String removeItem = scanner.nextLine();
-                if (!remove && removeItem.equalsIgnoreCase(product.getSku())) {
-                    cart.remove(product);
-                    bufferedWriter.write(product.toString());
-                    bufferedWriter.close();
-                    System.out.println("Successfully removed item from cart!");
-                }
-
-                if (removeItem.isBlank()) {
-                    return;
-                }
-                if (!cart.isEmpty()){
-                totalAmount += product.getProductPrice();
-                System.out.println("Amount owed: "+totalAmount);
-                }else{
-                    System.out.println("You owe: "+totalAmount);
-                }
             }
+
+            //Ask if they would like to remove items
+            System.out.println(" ");
+            System.out.println("Would you like to remove items (Enter ID or press Enter to skip)");
+            String input = scanner.nextLine();
+
+            //If statement to remove item from cart
+            if (!input.isBlank()) {
+                for (int i = 0; i < cart.size(); i++) {
+                    if (cart.get(i).getSku().equalsIgnoreCase(input)) {
+                        cart.remove(i);
+                        System.out.println("Item successfully removed ");
+                        break;
+                    }
+                }
+            }else {
+                System.out.println("Proceeding to checkout, No items removed");
+            }
+            bufferedWriter.write(cart.toString());
+            bufferedWriter.close();
         }catch (Exception e){
             System.out.println("An error has occurred!");
         }
