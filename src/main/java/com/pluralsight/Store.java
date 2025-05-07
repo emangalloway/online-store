@@ -137,8 +137,12 @@ public class Store {
                 if (removeItem.isBlank()) {
                     return;
                 }
+                if (!cart.isEmpty()){
                 totalAmount += product.getProductPrice();
-                System.out.println("You owe "+totalAmount);
+                System.out.println("Amount owed: "+totalAmount);
+                }else{
+                    System.out.println("You owe: "+totalAmount);
+                }
             }
         }catch (Exception e){
             System.out.println("An error has occurred!");
