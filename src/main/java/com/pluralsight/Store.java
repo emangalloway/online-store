@@ -142,6 +142,7 @@ public class Store {
             }else {
                 System.out.println("Proceeding to checkout, No items removed");
             }
+
             bufferedWriter.write(cart.toString());
             bufferedWriter.close();
         }catch (Exception e){
@@ -155,6 +156,26 @@ public class Store {
     }
 
     public static void checkOut(ArrayList<Product> cart, double totalAmount) {
+        Scanner scanner = new Scanner(System.in);
+        for (Product product : cart) {
+            System.out.println("Items in cart: "+product);
+            totalAmount += product.getProductPrice();
+            System.out.println("Amount due: $"+totalAmount);
+        }
+        System.out.println("Enter Amount to cover cost");
+        String input = scanner.nextLine();
+        double coverCostInput = Double.parseDouble(input);
+        System.out.println(totalAmount - coverCostInput);
+        if (coverCostInput > totalAmount){
+            double change = coverCostInput - totalAmount;
+            System.out.println("Successful payment, Your change is: $"+change);
+        } else if (coverCostInput == totalAmount) {
+            System.out.println("Successful payment");
+        }else{
+            double remainingAmountDue = totalAmount-coverCostInput;
+            System.out.println("You still owe: $"+remainingAmountDue);
+        }
+
         // This method should calculate the total cost of all items in the cart,
         // and display a summary of the purchase to the user. The method should
         // prompt the user to confirm the purchase, and calculate change and clear the cart
