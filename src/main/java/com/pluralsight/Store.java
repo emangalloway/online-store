@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -47,6 +49,21 @@ public class Store {
     }
 
     public static void loadInventory(String fileName, ArrayList<Product> inventory) {
+        String line;
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+            while ((line = bufferedReader.readLine()) != null){
+                String[] parts = line.split("\\|");
+                String sku = parts[0];
+                String productName = parts[1];
+                double price = Double.parseDouble(parts[2]);
+                Product Inventory = new Product(sku,productName,price);
+
+            }
+
+        }catch (Exception e){
+            System.out.println("An error has occurred");
+        }
         // This method should read a CSV file with product information and
         // populate the inventory ArrayList with com.pluralsight.Product objects. Each line
         // of the CSV file contains product information in the following format:
@@ -87,4 +104,4 @@ public class Store {
         // null.
     }
 }
- 
+
