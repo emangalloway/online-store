@@ -68,14 +68,6 @@ public class Store {
         }catch (Exception e){
             System.out.println("An error has occurred");
         }
-        // This method should read a CSV file with product information and
-        // populate the inventory ArrayList with com.pluralsight.Product objects. Each line
-        // of the CSV file contains product information in the following format:
-        //
-        // id,name,price
-        //
-        // where id is a unique string identifier, name is the product name,
-        // price is a double value representing the price of the product
     }
 
     public static void displayProducts(ArrayList<Product> inventory, ArrayList<Product> cart, Scanner scanner) {
@@ -109,16 +101,10 @@ public class Store {
             System.out.println("An error has occurred");
         }
 
-        // This method should display a list of products from the inventory,
-        // and prompt the user to add items to their cart. The method should
-        // prompt the user to enter the ID of the product they want to add to
-        // their cart. The method should
-        // add the selected product to the cart ArrayList.
     }
 
     public static void displayCart(ArrayList<Product> cart, Scanner scanner, double totalAmount) {
-        try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("cart.csv", true));
+
             //Display Items in cart
             System.out.println("Items in your cart: ");
             for (Product product : cart) {
@@ -141,18 +127,8 @@ public class Store {
                 }
             }else {
                 System.out.println("Proceeding to checkout, No items removed");
+                checkOut(cart,totalAmount);
             }
-
-            bufferedWriter.write(cart.toString());
-            bufferedWriter.close();
-        }catch (Exception e){
-            System.out.println("An error has occurred!");
-        }
-        // This method should display the items in the cart ArrayList, along
-        // with the total cost of all items in the cart. The method should
-        // prompt the user to remove items from their cart by entering the ID
-        // of the product they want to remove. The method should update the cart ArrayList and totalAmount
-        // variable accordingly.
     }
 
     public static void checkOut(ArrayList<Product> cart, double totalAmount) {
@@ -165,28 +141,40 @@ public class Store {
         System.out.println("Enter Amount to cover cost");
         String input = scanner.nextLine();
         double coverCostInput = Double.parseDouble(input);
-        System.out.println(totalAmount - coverCostInput);
+        //System.out.println(totalAmount - coverCostInput);
         if (coverCostInput > totalAmount){
             double change = coverCostInput - totalAmount;
-            System.out.println("Successful payment, Your change is: $"+change);
+            System.out.printf("Successful payment, Your change is: '$%.2f\n'",change);
         } else if (coverCostInput == totalAmount) {
             System.out.println("Successful payment");
         }else{
             double remainingAmountDue = totalAmount-coverCostInput;
-            System.out.println("You still owe: $"+remainingAmountDue);
+            System.out.printf("You still owe: $ $%.2f\n",remainingAmountDue);
         }
 
-        // This method should calculate the total cost of all items in the cart,
-        // and display a summary of the purchase to the user. The method should
-        // prompt the user to confirm the purchase, and calculate change and clear the cart
-        // if they confirm.
     }
 
-    /*public static Product findProductById(String id, ArrayList<Product> inventory) {
+    /**
+     * I am having a hard time implementing this method in my display products method.
+     * I coded that method with an integrated search by ID feature first without realizing that the purpose of the findProductById method would do the same thing.
+     * @param id
+     * @param inventory
+     * @return
+     */
+    public static Product findProductById(String id, ArrayList<Product> inventory) {
+        boolean found = true;
+        for (Product product : inventory) {
+            if (product.getSku().equalsIgnoreCase(id)){
+                return product;
+            }
+            if (!found){
+                System.out.println("Product not found=");
+            }
+        }return null;
         // This method should search the inventory ArrayList for a product with
         // the specified ID, and return the corresponding com.pluralsight.Product object. If
         // no product with the specified ID is found, the method should return
         // null.
-    }*/
+    }
 }
 
