@@ -11,7 +11,6 @@ List the user stories that guided the development of your application. Format th
 - As a user, I would like to see all Items in inventory, so I can shop for items.
 - As a user, I would like to search Items by ID, so that I can see if they are available in the inventory.
 - As a user, I would like to add Items from inventory to my cart, so that I can check out.
-- 
 
 ## Setup
 
